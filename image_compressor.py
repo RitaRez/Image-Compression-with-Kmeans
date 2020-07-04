@@ -6,7 +6,7 @@ import os
 import ipywidgets as widgets
 
 from skimage import io
-from sklearn.cluster import KMeans
+from sklearn.cluster import MiniBatchKMeans
 from ipywidgets import interact, interactive, fixed, interact_manual, IntSlider
 
 
@@ -22,7 +22,7 @@ def color_compression(k, pic_name):
     ax.imshow(input_img)
     img_data = (input_img/255.0).reshape(-1, 3)
 
-    kmeans = KMeans(k).fit(img_data)
+    kmeans = MiniBatchKMeans(k).fit(img_data)
     k_colors = kmeans.cluster_centers_[kmeans.predict(img_data)]
     k_img = np.reshape(k_colors, (input_img.shape))
 
@@ -44,4 +44,4 @@ def color_compression(k, pic_name):
     io.imsave('compressed/'+pic_name, k_img)
 
 
-color_compression(4, '1-Saint-Basils-Cathedral.jpg')
+color_compression(6, '2-new-york-skyline.jpg')
