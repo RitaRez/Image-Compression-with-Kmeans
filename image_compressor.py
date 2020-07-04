@@ -10,14 +10,7 @@ from skimage import io
 from sklearn.cluster import KMeans
 from ipywidgets import interact, interactive, fixed, interact_manual, IntSlider
 
-img_dir ='./images'
 
-def data_preprocessing():
-    img = io.imread('images/1-Saint-Basils-Cathedral.jpg')
-    ax = plt.axes(xticks=[], yticks=[])
-    ax.imshow(img)
-    img_data = (img/255.0).reshape(-1, 3)
-    return img_data
 
 def visualizing_color_space(img_data):
     from plot_utils import plot_utils
@@ -25,13 +18,29 @@ def visualizing_color_space(img_data):
     x = plot_utils(img_data, title='Input color space: Over 16 million possible colors')
     x.colorSpace()
 
-def color_compression(image=os.listdir(img_dir), k=IntSlider(min=1,max=256, step=1, values=16), 
-                        continuous_update=False, layout=dict(width='100%')):
-    input_image = io.imread(img_dir+image)
-    img_data = (input_image/255.0).reshape(-1, 3)
+def color_compression(k=):
+    input_img = io.imread('images/1-Saint-Basils-Cathedral.jpg')
+    ax = plt.axes(xticks=[], yticks=[])
+    ax.imshow(input_img)
+    img_data = (input_img/255.0).reshape(-1, 3)
 
     kmeans = KMeans(k).fit(img_data)
     k_colors = kmeans.cluster_centers_[kmeans.predict(img_data)]
-    k_img = np.reshape(k_colors, (input_image.shape))
+    k_img = np.reshape(k_colors, (input_img.shape))
 
-data_preprocessing()    
+    fig, (ax1, ax2) = plt.subplots(1, 2)
+    fig.suptitle('K-means image compression', fontsize=20)
+
+    ax1.set_title('Compressed')
+    ax1.set_xticks([])
+    ax1.set_yticks([])
+    ax1.imshow(k_img)
+    ax2.set_title('Original (16,777, 216 colors)')
+    ax2.set_xticks([])
+    ax2.set_yticks([])
+    ax2.imshow(input_img)
+
+    plt.subplots_adjust(top=0.85)
+    plt.show()
+
+color_compression(8)
