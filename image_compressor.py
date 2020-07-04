@@ -1,4 +1,3 @@
-
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -11,15 +10,14 @@ from sklearn.cluster import KMeans
 from ipywidgets import interact, interactive, fixed, interact_manual, IntSlider
 
 
-
 def visualizing_color_space(img_data):
     from plot_utils import plot_utils
 
     x = plot_utils(img_data, title='Input color space: Over 16 million possible colors')
     x.colorSpace()
 
-def color_compression(k=):
-    input_img = io.imread('images/1-Saint-Basils-Cathedral.jpg')
+def color_compression(k, pic_name):
+    input_img = io.imread('originals/'+pic_name)
     ax = plt.axes(xticks=[], yticks=[])
     ax.imshow(input_img)
     img_data = (input_img/255.0).reshape(-1, 3)
@@ -43,4 +41,7 @@ def color_compression(k=):
     plt.subplots_adjust(top=0.85)
     plt.show()
 
-color_compression(8)
+    io.imsave('compressed/'+pic_name, k_img)
+
+
+color_compression(4, '1-Saint-Basils-Cathedral.jpg')
